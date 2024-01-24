@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request
 from subprocess import Popen, PIPE
 
 app = FastAPI()
-command = ["echo No command"]
+command = ["echo 'nothing to execute.'"]
 
 
 @app.get("/")
