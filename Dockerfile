@@ -1,11 +1,9 @@
 FROM python:3.11-slim-buster
 
 # INSTALL
-RUN apt-get -y update
-RUN apt-get -y install git
-
-# CLEANUP
-RUN apt-get clean
+RUN apt-get -y update && \
+    apt-get -y install git && \
+    apt-get clean
 
 # Set the working directory in the container to /app
 WORKDIR /app
