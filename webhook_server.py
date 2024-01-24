@@ -41,16 +41,21 @@ async def root():
 
 @app.post("/webhook")
 async def webhook(request: Request):
-    logger.info("HEADERS:")
     logger.info(request.headers)
-    logger.info("JSON:")
     json_ = await request.json()
     logger.info(json_)
     try:
         verify_signature(await request.body(), os.environ["WEBHOOK_SECRET"], request.headers["x-hub-signature-256"])
     except HTTPException as e:
         return e.detail
-    return {"message": "Hello World"}
+
+    # Execute command
+    process = Popen(command[0], shell=True, stdout=PIPE, stderr=PIPE)
+    stdout, stderr = process.communicate()
+    logger.info(f"Executing command: {command[0]}")
+    logger.info(f"stdout: {stdout}")
+    logger.info(f"stderr: {stderr}")
+    return {"status": "success"}
 
 
 @click.command()
