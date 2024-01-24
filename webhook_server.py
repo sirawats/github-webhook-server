@@ -47,7 +47,7 @@ async def webhook(request: Request):
     json_ = await request.json()
     logger.info(json_)
     try:
-        verify_signature(request.body(), os.environ["WEBHOOK_SECRET"], request.headers["x-hub-signature-256"])
+        verify_signature(await request.body(), os.environ["WEBHOOK_SECRET"], request.headers["x-hub-signature-256"])
     except HTTPException as e:
         return e.detail
     return {"message": "Hello World"}
