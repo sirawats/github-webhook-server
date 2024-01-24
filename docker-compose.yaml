@@ -11,4 +11,4 @@ services:
       - /home/ubuntu/.ssh:/root/.ssh # for ssh key
     environment:
       - WEBHOOK_SECRET=nq9Z2MbFQJXu5QpP08Q9pmOd5l1zILZS
-    command: git config --global --add safe.directory '/home/ubuntu' && python3 /app/webhook_server.py --host 0.0.0.0 --port 6900 'cd /home/ubuntu/cra-2 && git pull'
+    command: bash -c "git config --global --add safe.directory '/home/ubuntu' && python3 /app/webhook_server.py --host 0.0.0.0 --port 6900 'cd /home/ubuntu/cra-2 && git pull'"
