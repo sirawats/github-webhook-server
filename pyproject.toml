@@ -1,0 +1,30 @@
+[project]
+name = "github-webhook-server"
+version = "0.1.0"
+description = "Webhook server for GitHub"
+authors = [{ name = "leossok", email = "ohsirawat@gmail.com" }]
+dependencies = ["fastapi>=0.109.0", "uvicorn>=0.27.0", "click>=8.1.7"]
+requires-python = ">=3.11"
+readme = "README.md"
+license = { text = "MIT" }
+
+
+[tool.pdm.scripts]
+ruff = "ruff --fix ."
+
+
+[tool.ruff]
+line-length = 140
+ignore = [
+    # (missing public docstrings) These work off of the Python sense of "public", rather than our
+    # bespoke definition based off of `@public`. When ruff supports custom plugins then we can write
+    # appropriate rules to require docstrings for `@public`.
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+]
