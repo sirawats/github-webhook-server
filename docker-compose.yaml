@@ -13,5 +13,6 @@ services:
     environment:
       - WEBHOOK_SECRET=nq9Z2MbFQJXu5QpP08Q9pmOd5l1zILZS # secret key for webhook : replace it with your own
 
+
     # Make repository `/home/ubuntu/cra-2` safe to pull, and pull it when webhook is triggered
     command: bash -c "git config --global --add safe.directory /home/ubuntu/cra-2 && python3 /app/webhook_server.py --host 0.0.0.0 --port 6900 'cd /home/ubuntu/cra-2 && git pull'"
