@@ -3,6 +3,15 @@ services:
   github_webhook_server:
     build: .
     container_name: github_webhook_server
+    restart: always
     ports:
-      - "5900:5900"
-    command: python3 run /app/webhook_server.py --host 0.0.0.0 --port 6900 'echo yes!'
+      - "6900:6900"
+    volumes:
+      - ./:/app
+      - /home/ubuntu:/home/ubuntu # for file access
+      - /home/ubuntu/.ssh:/root/.ssh # for ssh key
+    environment:
+      - WEBHOOK_SECRET=nq9Z2MbFQJXu5QpP08Q9pmOd5l1zILZS # secret key for webhook
+
+    # Make repository `/home/ubuntu/cra-2` safe to pull, and pull it when webhook is triggered
+    command: bash -c "git config --global --add safe.directory /home/ubuntu/cra-2 && python3 /app/webhook_server.py --host 0.0.0.0 --port 6900 'cd /home/ubuntu/cra-2 && git pull'"
