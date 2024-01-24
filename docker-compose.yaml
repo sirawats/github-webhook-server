@@ -5,4 +5,4 @@ services:
     container_name: github_webhook_server
     ports:
       - "5900:5900"
-    command: python3 run /app/webhook_server.py --host 0.0.0.0 --port 6900 'echo yes!'
+    command: python3 /app/webhook_server.py --host 0.0.0.0 --port 6900 'echo yes!'
