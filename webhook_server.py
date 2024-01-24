@@ -17,7 +17,7 @@ async def webhook(request: Request):
     print("HEADERS:")
     print(request.headers)
     print("JSON:")
-    print(request.json())
+    print(f"{request.json()}")
     return {"message": "Hello World"}
 
 
