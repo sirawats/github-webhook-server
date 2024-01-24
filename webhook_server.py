@@ -22,10 +22,10 @@ async def webhook(request: Request):
 
 
 @click.command()
-@click.argument("execute", ngargs=1)
 @click.option("--host", default="0.0.0.0", help="Endpoint host")
 @click.option("--port", default=5900, help="Endpoint port")
-def main(execute: str, host: str, port: int):
+@click.argument("execute")
+def main(host: str, port: int, execute:str):
     command[0] = execute
     uvicorn.run(app, host=host, port=port, log_level="info")
 
