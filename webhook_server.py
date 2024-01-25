@@ -13,7 +13,8 @@ logger = logging.Logger("default_webhook_server_log")
 
 
 def verify_signature(payload_body, secret_token, signature_header):
-    """Verify that the payload was sent from GitHub by validating SHA256.
+    """
+    Verify that the payload was sent from GitHub by validating SHA256.
 
     Raise and return 403 if not authorized.
 
@@ -36,11 +37,26 @@ command = ["echo 'nothing to execute.'"]
 
 @app.get("/")
 async def root():
-    return {"message": "I'm good"}
+    """
+    Returns a JSON response with the message "Ok."
+    """
+    return {"message": "Ok."}
 
 
 @app.post("/webhook")
 async def webhook(request: Request):
+    """
+    Handle incoming webhook requests. Validate signature and execute command.
+
+    Args:
+        request (Request): The incoming request object.
+
+    Returns:
+        dict: The response containing the status of the webhook processing.
+
+    Raises:
+        HTTPException: If the request signature is invalid.
+    """
     logger.info(request.headers)
     json_ = await request.json()
     logger.info(json_)
@@ -64,6 +80,18 @@ async def webhook(request: Request):
 @click.option("--name", default="github_webhook_server", help="Name of the server")
 @click.argument("execute")
 def main(host: str, port: int, name: str, execute: str):
+    """
+    Main function to start the GitHub webhook server.
+
+    Args:
+        host (str): The host address for the server. Default is "0.0.0.0".
+        port (int): The port number for the server. Default is 5900.
+        name (str): The name of the server. Default is "github_webhook_server".
+        execute (str): The command to execute when a webhook event is received.
+
+    Returns:
+        None
+    """
     command[0] = execute
 
     # Config logging
