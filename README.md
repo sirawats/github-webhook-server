@@ -19,7 +19,7 @@ git clone https://github.com/leossok/github-webhook-server.git
 #### Install the required packages:
 
 ```bash
-pip install fastapi uvicorn
+pip install -r requirements.txt
 ```
 
 #### Set up the environment variable for the webhook secret:
@@ -27,7 +27,7 @@ pip install fastapi uvicorn
 ```bash
 export WEBHOOK_SECRET='your_github_webhook_secret'
 ```
-Use for verification of the webhook request. This should be set to the same value as the secret you set in your GitHub repository's webhook settings.
+Use for verification of the webhook request. This should be set to the same value as the secret you set in your GitHub repository's webhook settings. ([docs](https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries))
 
 ## Usage
 To start the server, run the script with the desired command to execute upon receiving a webhook:
@@ -47,16 +47,17 @@ For me, I use this command to pull the latest code from my GitHub repository to 
 - `--port` : The port on which the server listens. Defaults to `5900`.
 - `--name` : The name of the server, used in logging. Defaults to `github_webhook_server`.
 
-## Webhook Setup on GitHub
+## Webhook Setup on GitHub ([docs](https://docs.github.com/en/webhooks))
 1. Go to your repository on GitHub.
 2. Click on **Settings** > **Webhooks** > **Add webhook**.
 3. Set the Payload URL to your server's address (e.g., `http://yourserver:port/webhook`).
 4. Choose `application/json` for the `Content type`.
-5. Enter your **WEBHOOK_SECRET**.
+5. Enter your **`WEBHOOK_SECRET`**.
 6. Select the events for which you want to receive webhook notifications.
 7. Click `Add webhook` `.
 
-See [Github Webhook Official docs](https://docs.github.com/en/webhooks)
+
+
 
 ## Security
 The server verifies the GitHub signature in each request to ensure it's genuinely from GitHub. Ensure your **WEBHOOK_SECRET** is secure and not publicly exposed.
