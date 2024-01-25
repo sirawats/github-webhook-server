@@ -16,6 +16,6 @@ services:
     # Make repository `/home/ubuntu/cra-2` safe to pull, and pull it when webhook is triggered
     command: >
       sh -c "
-            git config --global --add safe.directory /home/ubuntu/cra-2 &&
+            git config --global --add safe.directory /home/ubuntu/helloworld &&
             python3 /app/webhook_server.py --host 0.0.0.0 --port 6900 'cd /home/ubuntu/helloworld && git pull'
             "
