@@ -3,7 +3,7 @@
 This Python application serves as a webhook server for GitHub. It listens for incoming webhook requests from GitHub and, upon a trigger, executes a predefined shell command. This is particularly useful for automating tasks such as pulling the latest code to your deployment server whenever new changes are pushed to a repository.
 
 ## Prerequisites
-- Python 3.6 or higher
+- Python 3.8 or higher
 - FastAPI
 - Uvicorn: an ASGI server
 - A GitHub repository with webhook access
