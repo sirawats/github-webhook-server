@@ -13,6 +13,8 @@ from datetime import datetime
 # Config Logging
 logger = logging.Logger("default_webhook_server_log")
 
+MATCH_BRANCH = "*"
+
 
 def verify_signature(payload_body, secret_token, signature_header):
     """
@@ -69,6 +71,11 @@ async def webhook(request: Request):
     logger.info(request.headers)
     json_ = await request.json()
     logger.info(json_)
+
+    # Validate the branch
+    if json_["ref"].split("/")[-1] != MATCH_BRANCH:
+        return {"status": "success"}
+
     try:
         state["webhook_status"] = "Processing..."
         state["webhook_datetime"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -111,8 +118,9 @@ async def monitor(request: Request):
 @click.option("--host", default="0.0.0.0", help="Endpoint host")
 @click.option("--port", default=5900, help="Endpoint port")
 @click.option("--name", default="github_webhook_server", help="Name of the server")
+@click.option("--branch", default="*", help="Match branch name for the webhook event")
 @click.argument("execute")
-def main(host: str, port: int, name: str, execute: str):
+def main(host: str, port: int, name: str, branch: str, execute: str):
     """
     Main function to start the GitHub webhook server.
 
@@ -126,6 +134,9 @@ def main(host: str, port: int, name: str, execute: str):
         None
     """
     command[0] = execute
+
+    global MATCH_BRANCH
+    MATCH_BRANCH = branch
 
     # Config logging
     logger.setLevel(logging.INFO)
