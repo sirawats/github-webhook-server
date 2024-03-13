@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Webhook Monitor</title>
+    <style>
+      .container {
+        text-align: center;
+        font-family: Arial, sans-serif;
+      }
+
+      .stage {
+        margin: 20px;
+        padding: 10px;
+      }
+
+      .stage-success {
+        color: green;
+      }
+
+      .stage-failed {
+        color: red;
+      }
+
+      button {
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Webhook Monitor</h1>
+
+      <div class="stage">
+        <h2>Webhook last called</h2>
+        <p>{{ webhook_datetime }}</p>
+        <p
+          class="{{ 'stage-success' if webhook_status == 'Success' else 'stage-failed' }}"
+        >
+          {{ webhook_status }}
+        </p>
+      </div>
+
+      <div class="stage">
+        <h2>Execute</h2>
+        <p>{{ execute_datetime }}</p>
+        <p
+          class="{{ 'stage-success' if build_status == 'Success' else 'stage-failed' }}"
+        >
+          {{ execute_status }}
+        </p>
+      </div>
+
+      <button onclick="location.reload()">Refresh</button>
+    </div>
+    <script>
+      // Additional JavaScript can be added here if needed
+    </script>
+  </body>
+</html>

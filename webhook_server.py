@@ -1,11 +1,13 @@
 import click
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.templating import Jinja2Templates
 from subprocess import Popen, PIPE
 import hashlib
 import hmac
 import os
 import logging
+from datetime import datetime
 
 
 # Config Logging
@@ -32,7 +34,14 @@ def verify_signature(payload_body, secret_token, signature_header):
 
 
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
 command = ["echo 'nothing to execute.'"]
+state = {
+    "webhook_datetime": "N/A",
+    "webhook_status": "N/A",
+    "execute_datetime": "N/A",
+    "execute_status": "N/A",
+}
 
 
 @app.get("/")
@@ -61,17 +70,41 @@ async def webhook(request):
     json_ = await request.json()
     logger.info(json_)
     try:
+        state["webhook_status"] = "Processing..."
+        state["webhook_datetime"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         verify_signature(await request.body(), os.environ["WEBHOOK_SECRET"], request.headers["x-hub-signature-256"])
     except HTTPException as e:
+        state["webhook_status"] = "Failed"
         return e.detail
+    state["webhook_status"] = "Success"
 
     # Execute command
+    state["execute_datetime"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    state["execute_status"] = "Processing..."
     process = Popen(command[0], shell=True, stdout=PIPE, stderr=PIPE)
     stdout, stderr = process.communicate()
+    state["execute_datetime"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Log the command execution
+    if process.returncode != 0:
+        state["execute_status"] = "Failed"
+        return {"status": "failed", "stdout": stdout, "stderr": stderr}
+    else:
+        state["execute_status"] = "Success"
+
     logger.info(f"Executing command: {command[0]}")
     logger.info(f"stdout: {stdout}")
     logger.info(f"stderr: {stderr}")
     return {"status": "success"}
+
+
+@app.get("/monitor")
+async def monitor(request: Request):
+    context = {"request": request}
+    for key, value in state.items():
+        context[key] = value
+
+    return templates.TemplateResponse("index.html", context)
 
 
 @click.command()
