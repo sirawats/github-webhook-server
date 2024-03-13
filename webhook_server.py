@@ -138,6 +138,7 @@ def main(host: str, port: int, name: str, branch: str, execute: str):
     global MATCH_BRANCH
     MATCH_BRANCH = branch
 
+
     # Config logging
     logger.setLevel(logging.INFO)
     handler = logging.StreamHandler()
@@ -149,6 +150,12 @@ def main(host: str, port: int, name: str, branch: str, execute: str):
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
     logger.addHandler(handler)
+
+    # Display the server information
+    logger.info(f"Starting {name} server...")
+    logger.info(f"Listening on {host}:{port}")
+    logger.info(f"Matching branch: {MATCH_BRANCH}")
+    logger.info(f"Executing command: {command[0]}")
 
     uvicorn.run(app, host=host, port=port, log_level="info")
 
