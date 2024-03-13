@@ -53,7 +53,7 @@ async def root():
 
 
 @app.post("/webhook")
-async def webhook(request):
+async def webhook(request: Request):
     """
     Handle incoming webhook requests. Validate signature and execute command.
 
