@@ -45,7 +45,7 @@
         <h2>Execute</h2>
         <p>{{ execute_datetime }}</p>
         <p
-          class="{{ 'stage-success' if build_status == 'Success' else 'stage-failed' }}"
+          class="{{ 'stage-success' if execute_status == 'Success' else 'stage-failed' }}"
         >
           {{ execute_status }}
         </p>
