@@ -13,7 +13,7 @@ This Python application serves as a webhook server for GitHub. It listens for in
 #### Clone this repository:
 
 ```bash
-git clone https://github.com/leossok/github-webhook-server.git
+git clone https://github.com/sirawats/github-webhook-server.git
 ```
 
 #### Install the required packages:
